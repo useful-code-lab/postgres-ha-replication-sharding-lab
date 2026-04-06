@@ -1,0 +1,41 @@
+scope: my_cluster
+name: node2       # уникальное имя для реплики
+namespace: /db/   # должно совпадать с мастером
+
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+  init:
+    encoding: UTF8
+    data_checksums: true
+    pg_hba:
+      - host replication replicator 0.0.0.0/0 md5
+      - host all all 0.0.0.0/0 md5
+
+etcd:
+  host: 10.157.62.135:2379   # адрес etcd мастера
+  protocol: http
+  use_proxies: true
+
+restapi:
+  listen: 0.0.0.0:8008
+  connect_address: 10.157.62.191:8008  # IP реплики
+
+postgresql:
+  listen: 0.0.0.0:5432
+  connect_address: 10.157.62.191:5432 # IP реплики
+  data_dir: /var/lib/postgresql/16/main
+  bin_dir: /usr/lib/postgresql/16/bin
+  authentication:
+    replication:
+      username: replicator
+      password: mysecret
+    superuser:
+      username: postgres
+      password: mysecret
+  parameters:
+    wal_level: replica
+    hot_standby: "on"  # позволяет реплике принимать запросы на чтение
