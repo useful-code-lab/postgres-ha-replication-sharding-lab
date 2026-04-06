@@ -105,4 +105,6 @@ postgres=# EXPLAIN (VERBOSE) SELECT * FROM orders WHERE id = 42;
 ```
 
 
+
+
  
