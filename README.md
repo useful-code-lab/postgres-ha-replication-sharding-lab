@@ -100,6 +100,7 @@ multipass stop pg-master
 ## 🔍 Основные команды для проверки
 
 # Узнаем IP-адреса
+```bash
 MASTER_IP=$(multipass info pg-master | grep IPv4 | awk '{print $2}')
 REPLICA_IP=$(multipass info pg-replica | grep IPv4 | awk '{print $2}')
 
@@ -107,6 +108,7 @@ echo "--------------------------------------"
 echo "Master IP: $MASTER_IP"
 echo "Replica IP: $REPLICA_IP"
 echo "--------------------------------------"
+```
 
 ### 📊 Проверка шардирования (Citus)
 
